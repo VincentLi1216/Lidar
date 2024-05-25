@@ -3,11 +3,19 @@ import numpy as np
 import cv2
 import os
 
+from util_json import read_json_file, write_json_file
+
 # 創建存儲圖像的資料夾
 os.makedirs("imgs", exist_ok=True)
 
-def save_image(image, frame_number, image_type):
+json_data = read_json_file("config.json")
+frame_number = json_data["saved_index"]
+json_data["saved_index"] = frame_number + 1
+write_json_file(json_data, "config.json")
+
+def save_image(image, image_type):
     # 保存圖像
+    global frame_number
     filename = f"imgs/{image_type}_frame_{frame_number}.png"
     cv2.imwrite(filename, image)
     print(f"{image_type}幀已保存：{filename}")
@@ -20,21 +28,21 @@ def save_depth_frame(depth_frame, frame_number):
     depth_image_8bit = cv2.convertScaleAbs(depth_image, alpha=0.03)
     
     # 保存深度圖像
-    save_image(depth_image_8bit, frame_number, "depth")
+    save_image(depth_image_8bit, "depth")
 
 def save_confidence_frame(confidence_frame, frame_number):
     # 將信心幀轉換為NumPy數組
     confidence_image = np.asanyarray(confidence_frame.get_data())
     
     # 保存信心圖像
-    save_image(confidence_image, frame_number, "confidence")
+    save_image(confidence_image, "confidence")
 
 def save_infrared_frame(infrared_frame, frame_number):
     # 將紅外幀轉換為NumPy數組
     infrared_image = np.asanyarray(infrared_frame.get_data())
     
     # 保存紅外圖像
-    save_image(infrared_image, frame_number, "infrared")
+    save_image(infrared_image, "infrared")
 
 def save_color_frame(color_frame, frame_number):
     # 將彩色幀轉換為NumPy數組
@@ -44,7 +52,7 @@ def save_color_frame(color_frame, frame_number):
     color_image_bgr = cv2.cvtColor(color_image, cv2.COLOR_RGB2BGR)
     
     # 保存彩色圖像
-    save_image(color_image_bgr, frame_number, "color")
+    save_image(color_image_bgr, "color")
 
 def test_realsense_l515():
     try:
@@ -78,7 +86,7 @@ def test_realsense_l515():
                 continue
 
             # 打印深度幀的一些信息
-            width = depth_frame.get_width()
+            width= depth_frame.get_width()
             height = depth_frame.get_height()
             print(f"深度幀大小：{width}x{height}")
             print(f"深度幀距離中心點的距離：{depth_frame.get_distance(width//2, height//2)}米")
