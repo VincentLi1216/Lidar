@@ -20,7 +20,7 @@ def subtract_images(image1_path, image2_path, output_path):
 
 if __name__ == "__main__":
     # 測試函數
-    image2_path = 'old_imgs\depth_frame_0.png'
+    image2_path = 'imgs\depth_frame_3.png'
     image1_path = 'imgs\depth_frame_0.png'
     output_path = 'diff.png'
 
