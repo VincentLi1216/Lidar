@@ -1,7 +1,9 @@
 import pyrealsense2 as rs
 import numpy as np
 import cv2
+
 import os
+import time
 
 from util_json import read_json_file, write_json_file
 
@@ -51,7 +53,7 @@ def save_color_frame(color_frame, frame_number):
     # 保存彩色圖像
     save_image(color_image_bgr, frame_number, "color")
 
-def test_realsense_l515(init_number=0, total_shots=5):
+def test_realsense_l515(init_number=0, total_shots=5, sleep_time=0):
     try:
         # 創建管道
         pipeline = rs.pipeline()
@@ -96,6 +98,8 @@ def test_realsense_l515(init_number=0, total_shots=5):
             save_infrared_frame(infrared_frame, frame_number)
             save_color_frame(color_frame, frame_number)
 
+            time.sleep(sleep_time)
+
         # 停止管道
         pipeline.stop()
         print("測試完成，管道已停止。")
@@ -104,4 +108,10 @@ def test_realsense_l515(init_number=0, total_shots=5):
         print(f"發生錯誤: {e}")
 
 if __name__ == "__main__":
-    test_realsense_l515(init_number=0, total_shots=1)
+
+    json_data = read_json_file("config.json")
+    image_number = json_data["saved_index"]
+    total_shots = 3
+    test_realsense_l515(init_number=image_number, total_shots=total_shots, sleep_time=0)
+    json_data["saved_index"] = image_number + total_shots
+    write_json_file(json_data, "config.json")

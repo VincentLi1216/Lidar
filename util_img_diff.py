@@ -19,14 +19,29 @@ def subtract_images(image1_path, image2_path, output_path):
     return result
 
 if __name__ == "__main__":
+
+    # image1_path = 'imgs\depth_frame_0.png'
+    # image2_path = 'imgs\depth_frame_102.png'
+    # output_path = 'diff_imgs/diff_0.png'
+
+    # result = subtract_images(image1_path, image2_path, output_path)
+
+    # cv2.imshow('Result', result)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
+
+    for i in range(102):
     # 測試函數
-    image2_path = 'imgs\depth_frame_3.png'
-    image1_path = 'imgs\depth_frame_0.png'
-    output_path = 'diff.png'
+        image2_path = f'imgs\depth_frame_{i+1}.png'
+        image1_path = 'imgs\depth_frame_0.png'
+        output_path = f'diff_imgs/diff_{i+1}.png'
 
-    result = subtract_images(image1_path, image2_path, output_path)
+        result = subtract_images(image1_path, image2_path, output_path)
 
-    # 顯示輸出圖片
-    cv2.imshow('Result', result)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+        # 顯示輸出圖片
+        #cv2.imshow('Result', result)
+        #cv2.waitKey(0)
+        #cv2.destroyAllWindows()
+
+        cv2.imwrite(output_path, result)

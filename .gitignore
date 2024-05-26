@@ -3,7 +3,7 @@ id_rsa
 id_rsa.pub
 .ssh/
 
-# mac
+# macOS
 # General
 .DS_Store
 .AppleDouble
@@ -13,6 +13,8 @@ id_rsa.pub
 Icon
 
 imgs/
+diff_imgs/
+人物/
 # Thumbnails
 ._*
 
